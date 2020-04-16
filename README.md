@@ -1,6 +1,6 @@
 ## Graphics speed tests for ESP32
 
-![ESP32 fullscreen fire](https://appelsiini.net/img/2020/esp-fire.jpg)
+![Cirlces](https://appelsiini.net/img/2020/pod-draw-circle.png)
 
 [Copepod](https://github.com/tuupola/copepod) graphics library speed tests for ESP32 based boards. See the accompanying [blog post](https://appelsiini.net/2020/embedded-graphics-library/). Ready made config files for M5Stack, TTGO T-Display and TGO T4 V13. For example to compile and flash for M5Stack run the following.
 
