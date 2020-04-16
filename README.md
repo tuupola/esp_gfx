@@ -1,4 +1,4 @@
-## ESP Fire Effect
+## Graphics speed tests for ESP32
 
 ![ESP32 fullscreen fire](https://appelsiini.net/img/2020/esp-fire.jpg)
 
