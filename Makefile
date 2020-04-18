@@ -3,7 +3,7 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := esp_fire
+PROJECT_NAME := esp_gfx
 
 include $(IDF_PATH)/make/project.mk
 
