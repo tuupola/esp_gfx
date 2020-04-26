@@ -52,7 +52,7 @@ static SemaphoreHandle_t mutex;
 static float fb_fps;
 static float fx_fps;
 static uint16_t current_demo = 0;
-
+static bitmap_t *bb;
 /*
  * Flushes the framebuffer to display in a loop. This demo is
  * capped to 30 fps.
@@ -119,7 +119,7 @@ void switch_task(void *params)
         pod_clear_screen();
         fps2_reset();
 
-        vTaskDelay(6000 / portTICK_RATE_MS);
+        vTaskDelay(10000 / portTICK_RATE_MS);
     }
 
     vTaskDelete(NULL);
@@ -300,9 +300,35 @@ void rgb_demo()
     pod_fill_rectangle(x2, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, blue);
 }
 
+void round_rectangle_demo()
+{
+    strcpy(primitive, "ROUND RECTANGLES");
+
+    int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
+    int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
+    int16_t x1 = (rand() % DISPLAY_WIDTH + 20) - 20;
+    int16_t y1 = (rand() % DISPLAY_HEIGHT + 20) - 20;
+    int16_t r = rand() % 10;
+    uint16_t colour = rand() % 0xffff;
+    pod_draw_rounded_rectangle(x0, y0, x1, y1, r, colour);
+}
+
+void fill_round_rectangle_demo()
+{
+    strcpy(primitive, "FILLED ROUND RECTANGLES");
+
+    int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
+    int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
+    int16_t x1 = (rand() % DISPLAY_WIDTH + 20) - 20;
+    int16_t y1 = (rand() % DISPLAY_HEIGHT + 20) - 20;
+    int16_t r = rand() % 10;
+    uint16_t colour = rand() % 0xffff;
+    pod_fill_rounded_rectangle(x0, y0, x1, y1, r, colour);
+}
+
 void demo_task(void *params)
 {
-    void (*demo[13]) ();
+    void (*demo[14]) ();
 
     demo[0] = rgb_demo;
     demo[1] = put_character_demo;
@@ -317,7 +343,8 @@ void demo_task(void *params)
     demo[10] = polygon_demo;
     demo[11] = fill_polygon_demo;
     demo[12] = put_text_demo;
-
+    demo[13] = round_rectangle_demo;
+    demo[14] = fill_round_rectangle_demo;
     while (1) {
         (*demo[current_demo])();
         /* Update the primitive fps counter. */
@@ -333,7 +360,11 @@ void app_main()
     ESP_LOGI(TAG, "SDK version: %s", esp_get_idf_version());
     ESP_LOGI(TAG, "Heap when starting: %d", esp_get_free_heap_size());
 
-    pod_init();
+    bb = pod_init();
+    if (bb) {
+        ESP_LOGI(TAG, "Back buffer: %dx%dx%d", bb->width, bb->height, bb->depth);
+    }
+
     pod_set_clip_window(0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
 
     ESP_LOGI(TAG, "Heap after pod init: %d", esp_get_free_heap_size());
