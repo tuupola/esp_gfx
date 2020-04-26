@@ -115,7 +115,7 @@ void switch_task(void *params)
     while (1) {
         ESP_LOGI(TAG, "%.*f %s per second, FB %.*f FPS", 1, fx_fps, primitive, 1, fb_fps);
 
-        current_demo = (current_demo + 1) % 13;
+        current_demo = (current_demo + 1) % 16;
         pod_clear_screen();
         fps2_reset();
 
@@ -183,6 +183,30 @@ void fill_circle_demo()
     uint16_t r = (rand() % 40);
     uint16_t colour = rand() % 0xffff;
     pod_fill_circle(x0, y0, r, colour);
+}
+
+void ellipse_demo()
+{
+    strcpy(primitive, "ELLIPSES");
+
+    int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
+    int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
+    uint16_t a = (rand() % 40) + 20;
+    uint16_t b = (rand() % 40) + 20;
+    uint16_t colour = rand() % 0xffff;
+    pod_draw_ellipse(x0, y0, a, b, colour);
+}
+
+void fill_ellipse_demo()
+{
+    strcpy(primitive, "FILLED ELLIPSES");
+
+    int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
+    int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
+    uint16_t a = (rand() % 40) + 20;
+    uint16_t b = (rand() % 40) + 20;
+    uint16_t colour = rand() % 0xffff;
+    pod_fill_ellipse(x0, y0, a, b, colour);
 }
 
 void line_demo()
@@ -328,7 +352,7 @@ void fill_round_rectangle_demo()
 
 void demo_task(void *params)
 {
-    void (*demo[14]) ();
+    void (*demo[17]) ();
 
     demo[0] = rgb_demo;
     demo[1] = put_character_demo;
@@ -345,6 +369,9 @@ void demo_task(void *params)
     demo[12] = put_text_demo;
     demo[13] = round_rectangle_demo;
     demo[14] = fill_round_rectangle_demo;
+    demo[15] = ellipse_demo;
+    demo[16] = fill_ellipse_demo;
+
     while (1) {
         (*demo[current_demo])();
         /* Update the primitive fps counter. */
