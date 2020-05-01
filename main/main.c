@@ -136,7 +136,7 @@ void switch_task(void *params)
 
         current_demo = (current_demo + 1) % 17;
         pod_clear_clip_window();
-        fps2_reset();
+        fps2(true);
 
         vTaskDelay(10000 / portTICK_RATE_MS);
     }
@@ -272,7 +272,6 @@ void put_pixel_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
-
     uint16_t colour = rand() % 0xffff;
     pod_put_pixel(x0, y0, colour);
 }
@@ -363,7 +362,7 @@ void demo_task(void *params)
     while (1) {
         (*demo[current_demo])();
         /* Update the primitive fps counter. */
-        fx_fps = fps2();
+        fx_fps = fps2(false);
     }
 
 

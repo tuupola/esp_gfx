@@ -31,19 +31,42 @@ SPDX-License-Identifier: MIT
 
 */
 
-#ifndef _POD_FPS2_H
-#define _POD_FPS2_H
+#ifndef _FPS2_H
+#define _FPS2_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <stdbool.h>
 
-#include <stdint.h>
+static inline float fps2(bool reset)
+{
+    static uint32_t ticks; /* TickType_t */
+    static uint32_t start; /* TickType_t */
+    static uint32_t frames = 1;
+    static float current = 0;
+    static bool firstrun = true;
 
-float fps2();
-void fps2_reset();
+    float smoothing = 0.9; /* Larger value is more smoothing. */
+    float measured = 0;
 
-#ifdef __cplusplus
+    if (reset) {
+        start = xTaskGetTickCount();
+        frames = 1;
+        current = 0;
+        firstrun = false;
+    }
+
+    if (firstrun) {
+        start = xTaskGetTickCount();
+        firstrun = false;
+    }
+    frames++;
+
+    ticks = xTaskGetTickCount() - start;
+    measured = frames / (float) ticks * pdMS_TO_TICKS(1000);
+    measured = (measured * smoothing) + (current * (1.0 - smoothing));
+
+    return measured;
 }
+
 #endif
-#endif /* POD_FPS_H */
