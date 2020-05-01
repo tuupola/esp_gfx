@@ -117,7 +117,7 @@ void switch_task(void *params)
         ESP_LOGI(TAG, "%.*f %s per second, FB %.*f FPS", 1, fx_fps, primitive, 1, fb_fps);
 
         current_demo = (current_demo + 1) % 16;
-        pod_clear_screen();
+        pod_clear_clip_window();
         fps2_reset();
 
         vTaskDelay(10000 / portTICK_RATE_MS);
