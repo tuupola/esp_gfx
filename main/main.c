@@ -47,7 +47,25 @@ SPDX-License-Identifier: MIT-0
 #include "sdkconfig.h"
 
 static const char *TAG = "main";
-static char primitive[32];
+static char primitive[17][32] = {
+    "RGB BARS",
+    "PIXELS",
+    "LINES",
+    "CIRCLES",
+    "FILLED CIRCLES",
+    "ELLIPSES",
+    "FILLED ELLIPSES",
+    "TRIANGLES",
+    "FILLED TRIANGLES",
+    "RECTANGLES",
+    "FILLED RECTANGLES",
+    "ROUND RECTANGLES",
+    "FILLED ROUND RECTANGLES",
+    "POLYGONS",
+    "FILLED POLYGONS",
+    "CHARACTERS",
+    "STRINGS"
+};
 
 static SemaphoreHandle_t mutex;
 static float fb_fps;
@@ -88,7 +106,7 @@ void fps_task(void *params)
     while (1) {
         pod_set_clip_window(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
 
-        swprintf(message, sizeof(message), L"%.*f %s PER SECOND       ", 0, fx_fps, primitive);
+        swprintf(message, sizeof(message), L"%.*f %s PER SECOND       ", 0, fx_fps, primitive[current_demo]);
         pod_put_text(message, 6, 4, color, font6x9);
         swprintf(message, sizeof(message), L"%.*f FPS  ", 1, fb_fps);
         pod_put_text(message, DISPLAY_WIDTH - 56, DISPLAY_HEIGHT - 14, color, font6x9);
@@ -99,7 +117,7 @@ void fps_task(void *params)
     }
 #else
     while (1) {
-        swprintf(message,  sizeof(message), L"%.*f %s PER SECOND       ", 0, fx_fps, primitive);
+        swprintf(message,  sizeof(message), L"%.*f %s PER SECOND       ", 0, fx_fps, primitive[current_demo]);
         pod_set_clip_window(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
         pod_put_text(message, 8, 4, color, font6x9);
         pod_set_clip_window(0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
@@ -114,9 +132,9 @@ void fps_task(void *params)
 void switch_task(void *params)
 {
     while (1) {
-        ESP_LOGI(TAG, "%.*f %s per second, FB %.*f FPS", 1, fx_fps, primitive, 1, fb_fps);
+        ESP_LOGI(TAG, "%.*f %s per second, FB %.*f FPS", 1, fx_fps, primitive[current_demo], 1, fb_fps);
 
-        current_demo = (current_demo + 1) % 16;
+        current_demo = (current_demo + 1) % 17;
         pod_clear_clip_window();
         fps2_reset();
 
@@ -128,8 +146,6 @@ void switch_task(void *params)
 
 void polygon_demo()
 {
-    strcpy(primitive, "POLYGONS");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (rand() % DISPLAY_WIDTH + 20) - 20;
@@ -147,8 +163,6 @@ void polygon_demo()
 
 void fill_polygon_demo()
 {
-    strcpy(primitive, "FILLED POLYGONS");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (rand() % DISPLAY_WIDTH + 20) - 20;
@@ -166,8 +180,6 @@ void fill_polygon_demo()
 
 void circle_demo()
 {
-    strcpy(primitive, "CIRCLES");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t r = (rand() % 40);
@@ -177,8 +189,6 @@ void circle_demo()
 
 void fill_circle_demo()
 {
-    strcpy(primitive, "FILLED CIRCLES");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t r = (rand() % 40);
@@ -188,8 +198,6 @@ void fill_circle_demo()
 
 void ellipse_demo()
 {
-    strcpy(primitive, "ELLIPSES");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t a = (rand() % 40) + 20;
@@ -200,8 +208,6 @@ void ellipse_demo()
 
 void fill_ellipse_demo()
 {
-    strcpy(primitive, "FILLED ELLIPSES");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t a = (rand() % 40) + 20;
@@ -212,7 +218,7 @@ void fill_ellipse_demo()
 
 void line_demo()
 {
-    strcpy(primitive, "LINES");
+    // strcpy(primitive, "LINES");
 
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -224,8 +230,6 @@ void line_demo()
 
 void rectangle_demo()
 {
-    strcpy(primitive, "RECTANGLES");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (rand() % DISPLAY_WIDTH + 20) - 20;
@@ -236,8 +240,6 @@ void rectangle_demo()
 
 void fill_rectangle_demo()
 {
-    strcpy(primitive, "FILLED RECTANGLES");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (rand() % DISPLAY_WIDTH + 20) - 20;
@@ -248,8 +250,6 @@ void fill_rectangle_demo()
 
 void put_character_demo()
 {
-    strcpy(primitive, "CHARACTERS");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
 
@@ -260,8 +260,6 @@ void put_character_demo()
 
 void put_text_demo()
 {
-    strcpy(primitive, "STRINGS");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 80;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
 
@@ -272,8 +270,6 @@ void put_text_demo()
 
 void put_pixel_demo()
 {
-    strcpy(primitive, "PIXELS");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
 
@@ -283,8 +279,6 @@ void put_pixel_demo()
 
 void triangle_demo()
 {
-    strcpy(primitive, "TRIANGLES");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (rand() % DISPLAY_WIDTH + 20) - 20;
@@ -297,8 +291,6 @@ void triangle_demo()
 
 void fill_triangle_demo()
 {
-    strcpy(primitive, "FILLED TRIANGLES");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (rand() % DISPLAY_WIDTH + 20) - 20;
@@ -311,8 +303,6 @@ void fill_triangle_demo()
 
 void rgb_demo()
 {
-    strcpy(primitive, "RGB BARS");
-
     uint16_t red = rgb565(255, 0, 0);
     uint16_t green = rgb565(0, 255, 0);
     uint16_t blue = rgb565(0, 0, 255);
@@ -328,8 +318,6 @@ void rgb_demo()
 
 void round_rectangle_demo()
 {
-    strcpy(primitive, "ROUND RECTANGLES");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (rand() % DISPLAY_WIDTH + 20) - 20;
@@ -341,8 +329,6 @@ void round_rectangle_demo()
 
 void fill_round_rectangle_demo()
 {
-    strcpy(primitive, "FILLED ROUND RECTANGLES");
-
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (rand() % DISPLAY_WIDTH + 20) - 20;
@@ -357,22 +343,22 @@ void demo_task(void *params)
     void (*demo[17]) ();
 
     demo[0] = rgb_demo;
-    demo[1] = put_character_demo;
-    demo[2] = put_pixel_demo;
-    demo[3] = fill_triangle_demo;
-    demo[4] = triangle_demo;
-    demo[5] = fill_rectangle_demo;
-    demo[6] = rectangle_demo;
-    demo[7] = line_demo;
-    demo[8] = circle_demo;
-    demo[9] = fill_circle_demo;
-    demo[10] = polygon_demo;
-    demo[11] = fill_polygon_demo;
-    demo[12] = put_text_demo;
-    demo[13] = round_rectangle_demo;
-    demo[14] = fill_round_rectangle_demo;
-    demo[15] = ellipse_demo;
-    demo[16] = fill_ellipse_demo;
+    demo[1] = put_pixel_demo;
+    demo[2] = line_demo;
+    demo[3] = circle_demo;
+    demo[4] = fill_circle_demo;
+    demo[5] = ellipse_demo;
+    demo[6] = fill_ellipse_demo;
+    demo[7] = triangle_demo;
+    demo[8] = fill_triangle_demo;
+    demo[9] = rectangle_demo;
+    demo[10] = fill_rectangle_demo;
+    demo[11] = round_rectangle_demo;
+    demo[12] = fill_round_rectangle_demo;
+    demo[13] = polygon_demo;
+    demo[14] = fill_polygon_demo;
+    demo[15] = put_character_demo;
+    demo[16] = put_text_demo;
 
     while (1) {
         (*demo[current_demo])();
