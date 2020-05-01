@@ -29,6 +29,7 @@ SPDX-License-Identifier: MIT-0
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <wchar.h>
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
@@ -40,7 +41,7 @@ SPDX-License-Identifier: MIT-0
 #include "rgb565.h"
 #include "copepod.h"
 #include "copepod_hal.h"
-#include "font8x8.h"
+#include "font6x9.h"
 #include "fps.h"
 #include "fps2.h"
 #include "sdkconfig.h"
@@ -81,16 +82,16 @@ void framebuffer_task(void *params)
 void fps_task(void *params)
 {
     uint16_t color = rgb565(0, 255, 0);
-    char message[128];
+    char16_t message[128];
 
 #ifdef CONFIG_POD_HAL_USE_DOUBLE_BUFFERING
     while (1) {
         pod_set_clip_window(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
 
-        sprintf(message, "%.*f %s PER SECOND       ", 0, fx_fps, primitive);
-        pod_put_text(message, 8, 4, color, font8x8);
-        sprintf(message, "%.*f FPS  ", 1, fb_fps);
-        pod_put_text(message, DISPLAY_WIDTH - 72, DISPLAY_HEIGHT - 14, color, font8x8);
+        swprintf(message, sizeof(message), L"%.*f %s PER SECOND       ", 0, fx_fps, primitive);
+        pod_put_text(message, 6, 4, color, font6x9);
+        swprintf(message, sizeof(message), L"%.*f FPS  ", 1, fb_fps);
+        pod_put_text(message, DISPLAY_WIDTH - 56, DISPLAY_HEIGHT - 14, color, font6x9);
 
         pod_set_clip_window(0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
 
@@ -98,9 +99,9 @@ void fps_task(void *params)
     }
 #else
     while (1) {
-        sprintf(message, "%.*f %s PER SECOND       ", 0, fx_fps, primitive);
+        swprintf(message,  sizeof(message), L"%.*f %s PER SECOND       ", 0, fx_fps, primitive);
         pod_set_clip_window(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
-        pod_put_text(message, 8, 4, color, font8x8);
+        pod_put_text(message, 8, 4, color, font6x9);
         pod_set_clip_window(0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
 
 
@@ -254,18 +255,19 @@ void put_character_demo()
 
     uint16_t colour = rand() % 0xffff;
     char ascii = rand() % 127;
-    pod_put_char(ascii, x0, y0, colour, font8x8);
+    pod_put_char(ascii, x0, y0, colour, font6x9);
 }
 
 void put_text_demo()
 {
     strcpy(primitive, "STRINGS");
 
-    int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 100;
+    int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 80;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
 
     uint16_t colour = rand() % 0xffff;
-    pod_put_text("YO! MTV raps.", x0, y0, colour, font8x8);
+
+    pod_put_text(u"YO¡ MTV raps♥", x0, y0, colour, font6x9);
 }
 
 void put_pixel_demo()
