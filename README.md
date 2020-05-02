@@ -1,8 +1,8 @@
 ## Graphics speed tests for ESP32
 
-![Cirlces](https://appelsiini.net/img/2020/pod-draw-circle.png)
+![Circles](https://appelsiini.net/img/2020/pod-draw-circle.png)
 
-[Copepod](https://github.com/tuupola/copepod) graphics library speed tests for ESP32 based boards. See the accompanying [blog post](https://appelsiini.net/2020/embedded-graphics-library/). Ready made config files for M5Stack, TTGO T-Display and TGO T4 V13. For example to compile and flash for M5Stack run the following.
+[HAGL](https://github.com/tuupola/hagl) graphics library speed tests for ESP32 based boards. See the accompanying [blog post](https://appelsiini.net/2020/embedded-graphics-library/). Ready made config files for M5Stack, TTGO T-Display and TGO T4 V13. For example to compile and flash for M5Stack run the following.
 
 ```
 $ git clone git@github.com:tuupola/esp_gfx.git --recursive

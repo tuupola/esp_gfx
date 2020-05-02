@@ -37,14 +37,14 @@ SPDX-License-Identifier: MIT-0
 #include <esp_log.h>
 #include <esp_task_wdt.h>
 
+#include "sdkconfig.h"
 #include "bitmap.h"
 #include "rgb565.h"
-#include "copepod.h"
-#include "copepod_hal.h"
+#include "hagl.h"
+#include "hagl_hal.h"
 #include "font6x9.h"
 #include "fps.h"
 #include "fps2.h"
-#include "sdkconfig.h"
 
 static const char *TAG = "main";
 static char primitive[17][32] = {
@@ -85,7 +85,7 @@ void framebuffer_task(void *params)
 
     while (1) {
         xSemaphoreTake(mutex, portMAX_DELAY);
-        pod_flush();
+        hagl_flush();
         xSemaphoreGive(mutex);
         fb_fps = fps();
         vTaskDelayUntil(&last, frequency);
@@ -102,25 +102,25 @@ void fps_task(void *params)
     uint16_t color = rgb565(0, 255, 0);
     char16_t message[128];
 
-#ifdef CONFIG_POD_HAL_USE_DOUBLE_BUFFERING
+#ifdef CONFIG_HAGL_HAL_USE_DOUBLE_BUFFERING
     while (1) {
-        pod_set_clip_window(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
+        hagl_set_clip_window(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
 
         swprintf(message, sizeof(message), L"%.*f %s PER SECOND       ", 0, fx_fps, primitive[current_demo]);
-        pod_put_text(message, 6, 4, color, font6x9);
+        hagl_put_text(message, 6, 4, color, font6x9);
         swprintf(message, sizeof(message), L"%.*f FPS  ", 1, fb_fps);
-        pod_put_text(message, DISPLAY_WIDTH - 56, DISPLAY_HEIGHT - 14, color, font6x9);
+        hagl_put_text(message, DISPLAY_WIDTH - 56, DISPLAY_HEIGHT - 14, color, font6x9);
 
-        pod_set_clip_window(0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
+        hagl_set_clip_window(0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
 
         vTaskDelay(1000 / portTICK_RATE_MS);
     }
 #else
     while (1) {
         swprintf(message,  sizeof(message), L"%.*f %s PER SECOND       ", 0, fx_fps, primitive[current_demo]);
-        pod_set_clip_window(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
-        pod_put_text(message, 8, 4, color, font6x9);
-        pod_set_clip_window(0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
+        hagl_set_clip_window(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
+        hagl_put_text(message, 8, 4, color, font6x9);
+        hagl_set_clip_window(0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
 
 
         vTaskDelay(2000 / portTICK_RATE_MS);
@@ -135,7 +135,7 @@ void switch_task(void *params)
         ESP_LOGI(TAG, "%.*f %s per second, FB %.*f FPS", 1, fx_fps, primitive[current_demo], 1, fb_fps);
 
         current_demo = (current_demo + 1) % 17;
-        pod_clear_clip_window();
+        hagl_clear_clip_window();
         fps2(true);
 
         vTaskDelay(10000 / portTICK_RATE_MS);
@@ -158,7 +158,7 @@ void polygon_demo()
     int16_t y4 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t colour = rand() % 0xffff;
     int16_t vertices[10] = {x0, y0, x1, y1, x2, y2, x3, y3, x4, y4};
-    pod_draw_polygon(5, vertices, colour);
+    hagl_draw_polygon(5, vertices, colour);
 }
 
 void fill_polygon_demo()
@@ -175,7 +175,7 @@ void fill_polygon_demo()
     int16_t y4 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t colour = rand() % 0xffff;
     int16_t vertices[10] = {x0, y0, x1, y1, x2, y2, x3, y3, x4, y4};
-    pod_fill_polygon(5, vertices, colour);
+    hagl_fill_polygon(5, vertices, colour);
 }
 
 void circle_demo()
@@ -184,7 +184,7 @@ void circle_demo()
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t r = (rand() % 40);
     uint16_t colour = rand() % 0xffff;
-    pod_draw_circle(x0, y0, r, colour);
+    hagl_draw_circle(x0, y0, r, colour);
 }
 
 void fill_circle_demo()
@@ -193,7 +193,7 @@ void fill_circle_demo()
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t r = (rand() % 40);
     uint16_t colour = rand() % 0xffff;
-    pod_fill_circle(x0, y0, r, colour);
+    hagl_fill_circle(x0, y0, r, colour);
 }
 
 void ellipse_demo()
@@ -203,7 +203,7 @@ void ellipse_demo()
     uint16_t a = (rand() % 40) + 20;
     uint16_t b = (rand() % 40) + 20;
     uint16_t colour = rand() % 0xffff;
-    pod_draw_ellipse(x0, y0, a, b, colour);
+    hagl_draw_ellipse(x0, y0, a, b, colour);
 }
 
 void fill_ellipse_demo()
@@ -213,7 +213,7 @@ void fill_ellipse_demo()
     uint16_t a = (rand() % 40) + 20;
     uint16_t b = (rand() % 40) + 20;
     uint16_t colour = rand() % 0xffff;
-    pod_fill_ellipse(x0, y0, a, b, colour);
+    hagl_fill_ellipse(x0, y0, a, b, colour);
 }
 
 void line_demo()
@@ -225,7 +225,7 @@ void line_demo()
     int16_t x1 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y1 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t colour = rand() % 0xffff;
-    pod_draw_line(x0, y0, x1, y1, colour);
+    hagl_draw_line(x0, y0, x1, y1, colour);
 }
 
 void rectangle_demo()
@@ -235,7 +235,7 @@ void rectangle_demo()
     int16_t x1 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y1 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t colour = rand() % 0xffff;
-    pod_draw_rectangle(x0, y0, x1, y1, colour);
+    hagl_draw_rectangle(x0, y0, x1, y1, colour);
 }
 
 void fill_rectangle_demo()
@@ -245,7 +245,7 @@ void fill_rectangle_demo()
     int16_t x1 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y1 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t colour = rand() % 0xffff;
-    pod_fill_rectangle(x0, y0, x1, y1, colour);
+    hagl_fill_rectangle(x0, y0, x1, y1, colour);
 }
 
 void put_character_demo()
@@ -255,7 +255,7 @@ void put_character_demo()
 
     uint16_t colour = rand() % 0xffff;
     char ascii = rand() % 127;
-    pod_put_char(ascii, x0, y0, colour, font6x9);
+    hagl_put_char(ascii, x0, y0, colour, font6x9);
 }
 
 void put_text_demo()
@@ -265,7 +265,7 @@ void put_text_demo()
 
     uint16_t colour = rand() % 0xffff;
 
-    pod_put_text(u"YO¡ MTV raps♥", x0, y0, colour, font6x9);
+    hagl_put_text(u"YO¡ MTV raps♥", x0, y0, colour, font6x9);
 }
 
 void put_pixel_demo()
@@ -273,7 +273,7 @@ void put_pixel_demo()
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t colour = rand() % 0xffff;
-    pod_put_pixel(x0, y0, colour);
+    hagl_put_pixel(x0, y0, colour);
 }
 
 void triangle_demo()
@@ -285,7 +285,7 @@ void triangle_demo()
     int16_t x2 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y2 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t colour = rand() % 0xffff;
-    pod_draw_triangle(x0, y0, x1, y1, x2, y2, colour);
+    hagl_draw_triangle(x0, y0, x1, y1, x2, y2, colour);
 }
 
 void fill_triangle_demo()
@@ -297,7 +297,7 @@ void fill_triangle_demo()
     int16_t x2 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y2 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t colour = rand() % 0xffff;
-    pod_fill_triangle(x0, y0, x1, y1, x2, y2, colour);
+    hagl_fill_triangle(x0, y0, x1, y1, x2, y2, colour);
 }
 
 void rgb_demo()
@@ -310,9 +310,9 @@ void rgb_demo()
     int16_t x1 = DISPLAY_WIDTH / 3;
     int16_t x2 = 2 * x1;
 
-    pod_fill_rectangle(x0, 0, x1 - 1, DISPLAY_HEIGHT, red);
-    pod_fill_rectangle(x1, 0, x2 - 1, DISPLAY_HEIGHT, green);
-    pod_fill_rectangle(x2, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, blue);
+    hagl_fill_rectangle(x0, 0, x1 - 1, DISPLAY_HEIGHT, red);
+    hagl_fill_rectangle(x1, 0, x2 - 1, DISPLAY_HEIGHT, green);
+    hagl_fill_rectangle(x2, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, blue);
 }
 
 void round_rectangle_demo()
@@ -323,7 +323,7 @@ void round_rectangle_demo()
     int16_t y1 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t r = rand() % 10;
     uint16_t colour = rand() % 0xffff;
-    pod_draw_rounded_rectangle(x0, y0, x1, y1, r, colour);
+    hagl_draw_rounded_rectangle(x0, y0, x1, y1, r, colour);
 }
 
 void fill_round_rectangle_demo()
@@ -334,7 +334,7 @@ void fill_round_rectangle_demo()
     int16_t y1 = (rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t r = rand() % 10;
     uint16_t colour = rand() % 0xffff;
-    pod_fill_rounded_rectangle(x0, y0, x1, y1, r, colour);
+    hagl_fill_rounded_rectangle(x0, y0, x1, y1, r, colour);
 }
 
 void demo_task(void *params)
@@ -374,19 +374,19 @@ void app_main()
     ESP_LOGI(TAG, "SDK version: %s", esp_get_idf_version());
     ESP_LOGI(TAG, "Heap when starting: %d", esp_get_free_heap_size());
 
-    bb = pod_init();
+    bb = hagl_init();
     if (bb) {
         ESP_LOGI(TAG, "Back buffer: %dx%dx%d", bb->width, bb->height, bb->depth);
     }
 
-    pod_set_clip_window(0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
+    hagl_set_clip_window(0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
 
-    ESP_LOGI(TAG, "Heap after pod init: %d", esp_get_free_heap_size());
+    ESP_LOGI(TAG, "Heap after HAGL init: %d", esp_get_free_heap_size());
 
     mutex = xSemaphoreCreateMutex();
 
     if (NULL != mutex) {
-#ifdef CONFIG_POD_HAL_USE_DOUBLE_BUFFERING
+#ifdef CONFIG_HAGL_HAL_USE_DOUBLE_BUFFERING
         xTaskCreatePinnedToCore(framebuffer_task, "Framebuffer", 8192, NULL, 1, NULL, 0);
 #endif
         xTaskCreatePinnedToCore(fps_task, "FPS", 8092, NULL, 2, NULL, 1);

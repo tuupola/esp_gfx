@@ -183,19 +183,6 @@ CONFIG_COAP_LOG_DEFAULT_LEVEL=0
 # end of CoAP Configuration
 
 #
-# Copepod graphics library
-#
-CONFIG_POD_TJPGD_NEEDS_BYTESWAP=y
-# end of Copepod graphics library
-
-#
-# Copepod HAL (MIPI)
-#
-CONFIG_POD_HAL_USE_DOUBLE_BUFFERING=y
-# CONFIG_POD_HAL_LOCK_WHEN_FLUSHING is not set
-# end of Copepod HAL (MIPI)
-
-#
 # Driver configurations
 #
 
@@ -620,6 +607,19 @@ CONFIG_FREERTOS_CHECK_MUTEX_GIVEN_BY_OWNER=y
 CONFIG_FREERTOS_DEBUG_OCDAWARE=y
 # CONFIG_FREERTOS_FPU_IN_ISR is not set
 # end of FreeRTOS
+
+#
+# Hardware Agnostic Graphics Library (HAGL)
+#
+CONFIG_HAGL_TJPGD_NEEDS_BYTESWAP=y
+# end of Hardware Agnostic Graphics Library (HAGL)
+
+#
+# HAGL HAL (MIPI)
+#
+CONFIG_HAGL_HAL_USE_DOUBLE_BUFFERING=y
+# CONFIG_HAGL_HAL_LOCK_WHEN_FLUSHING is not set
+# end of HAGL HAL (MIPI)
 
 #
 # Heap memory debugging

@@ -183,17 +183,17 @@ CONFIG_COAP_LOG_DEFAULT_LEVEL=0
 # end of CoAP Configuration
 
 #
-# Copepod graphics library
+# Hardware Agnostic Graphics Library (HAGL)
 #
-CONFIG_POD_TJPGD_NEEDS_BYTESWAP=y
-# end of Copepod graphics library
+CONFIG_HAGL_TJPGD_NEEDS_BYTESWAP=y
+# end of Hardware Agnostic Graphics Library (HAGL)
 
 #
-# Copepod HAL (MIPI)
+# HAGL HAL (MIPI)
 #
-CONFIG_POD_HAL_USE_DOUBLE_BUFFERING=y
-# CONFIG_POD_HAL_LOCK_WHEN_FLUSHING is not set
-# end of Copepod HAL (MIPI)
+CONFIG_HAGL_HAL_USE_DOUBLE_BUFFERING=y
+# CONFIG_HAGL_HAL_LOCK_WHEN_FLUSHING is not set
+# end of HAGL HAL (MIPI)
 
 #
 # Driver configurations
