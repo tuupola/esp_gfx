@@ -43,7 +43,7 @@ SPDX-License-Identifier: MIT-0
 #include "hagl.h"
 #include "font6x9.h"
 #include "fps.h"
-#include "fps2.h"
+#include "aps.h"
 
 static const char *TAG = "main";
 static char primitive[17][32] = {
@@ -71,6 +71,7 @@ static float fb_fps;
 static float fx_fps;
 static uint16_t current_demo = 0;
 static bitmap_t *bb;
+static uint32_t drawn = 0;
 /*
  * Flushes the framebuffer to display in a loop. This demo is
  * capped to 30 fps.
@@ -103,6 +104,9 @@ void fps_task(void *params)
 
 #ifdef HAGL_HAL_USE_BUFFERING
     while (1) {
+        fx_fps = aps(drawn);
+        drawn = 0;
+
         hagl_set_clip_window(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
 
         swprintf(message, sizeof(message), L"%.*f %s PER SECOND       ", 0, fx_fps, primitive[current_demo]);
@@ -131,11 +135,12 @@ void fps_task(void *params)
 void switch_task(void *params)
 {
     while (1) {
-        ESP_LOGI(TAG, "%.*f %s per second, FB %.*f FPS", 1, fx_fps, primitive[current_demo], 1, fb_fps);
+        ESP_LOGI(TAG, "%.*f %s per second, FB %.*f FPS", 0, fx_fps, primitive[current_demo], 1, fb_fps);
 
         current_demo = (current_demo + 1) % 17;
         hagl_clear_clip_window();
-        fps2(true);
+        aps(APS_RESET);
+        drawn = 0;
 
         vTaskDelay(10000 / portTICK_RATE_MS);
     }
@@ -264,7 +269,7 @@ void put_text_demo()
 
     color_t colour = rand() % 0xffff;
 
-    hagl_put_text(u"YO¡ MTV raps♥", x0, y0, colour, font6x9);
+    hagl_put_text(u"YO¡ MTV raps2♥", x0, y0, colour, font6x9);
 }
 
 void put_pixel_demo()
@@ -361,8 +366,7 @@ void demo_task(void *params)
     while (1) {
         //current_demo = 2;
         (*demo[current_demo])();
-        /* Update the primitive fps counter. */
-        fx_fps = fps2(false);
+        drawn++;
     }
 
 
@@ -388,8 +392,8 @@ void app_main()
 #ifdef HAGL_HAL_USE_BUFFERING
         xTaskCreatePinnedToCore(framebuffer_task, "Framebuffer", 8192, NULL, 1, NULL, 0);
 #endif
-        xTaskCreatePinnedToCore(fps_task, "FPS", 8092, NULL, 2, NULL, 1);
-        xTaskCreatePinnedToCore(demo_task, "Demo", 4096, NULL, 1, NULL, 1);
+        xTaskCreatePinnedToCore(fps_task, "FPS", 4096, NULL, 2, NULL, 1);
+        xTaskCreatePinnedToCore(demo_task, "Demo", 8192, NULL, 1, NULL, 1);
         xTaskCreatePinnedToCore(switch_task, "Switch", 2048, NULL, 2, NULL, 1);
     } else {
         ESP_LOGE(TAG, "No mutex?");
