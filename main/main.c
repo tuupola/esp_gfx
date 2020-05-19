@@ -120,6 +120,9 @@ void fps_task(void *params)
     }
 #else
     while (1) {
+        fx_fps = aps(drawn);
+        drawn = 0;
+
         swprintf(message,  sizeof(message), L"%.*f %s PER SECOND       ", 0, fx_fps, primitive[current_demo]);
         hagl_set_clip_window(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
         hagl_put_text(message, 8, 4, color, font6x9);
@@ -392,7 +395,7 @@ void app_main()
 #ifdef HAGL_HAL_USE_BUFFERING
         xTaskCreatePinnedToCore(framebuffer_task, "Framebuffer", 8192, NULL, 1, NULL, 0);
 #endif
-        xTaskCreatePinnedToCore(fps_task, "FPS", 4096, NULL, 2, NULL, 1);
+        xTaskCreatePinnedToCore(fps_task, "FPS", 8192, NULL, 2, NULL, 1);
         xTaskCreatePinnedToCore(demo_task, "Demo", 8192, NULL, 1, NULL, 1);
         xTaskCreatePinnedToCore(switch_task, "Switch", 2048, NULL, 2, NULL, 1);
     } else {
