@@ -37,6 +37,9 @@ SPDX-License-Identifier: MIT-0
 #include <esp_log.h>
 #include <esp_task_wdt.h>
 
+#include <i2c_helper.h>
+#include <axp192.h>
+
 #include "sdkconfig.h"
 #include "hagl_hal.h"
 #include "bitmap.h"
@@ -72,6 +75,8 @@ static float fx_fps;
 static uint16_t current_demo = 0;
 static bitmap_t *bb;
 static uint32_t drawn = 0;
+static axp192_t axp;
+
 /*
  * Flushes the framebuffer to display in a loop. This demo is
  * capped to 30 fps.
@@ -380,6 +385,14 @@ void app_main()
 {
     ESP_LOGI(TAG, "SDK version: %s", esp_get_idf_version());
     ESP_LOGI(TAG, "Heap when starting: %d", esp_get_free_heap_size());
+
+    ESP_LOGI(TAG, "Initializing I2C");
+    i2c_init();
+
+    ESP_LOGI(TAG, "Initializing AXP192");
+    axp.read = &i2c_read;
+    axp.write = &i2c_write;
+    axp192_init(&axp);
 
     bb = hagl_init();
     if (bb) {
