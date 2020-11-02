@@ -100,7 +100,7 @@ void framebuffer_task(void *params)
 void fps_task(void *params)
 {
     uint16_t color = hagl_color(0, 255, 0);
-    char16_t message[128];
+    wchar_t message[128];
 
 #ifdef HAGL_HAL_USE_BUFFERING
     while (1) {
@@ -272,7 +272,7 @@ void put_text_demo()
 
     color_t colour = rand() % 0xffff;
 
-    hagl_put_text(u"YO¡ MTV raps2♥", x0, y0, colour, font6x9);
+    hagl_put_text(u"YO¡ MTV raps ♥", x0, y0, colour, font6x9);
 }
 
 void put_pixel_demo()
@@ -367,7 +367,7 @@ void demo_task(void *params)
     demo[16] = put_text_demo;
 
     while (1) {
-        //current_demo = 2;
+        //current_demo = 16;
         (*demo[current_demo])();
         drawn++;
     }
