@@ -1,5 +1,5 @@
 [submodule "components/hagl_esp_mipi"]
-	path = components/hagl_esp_mipi
+	path = components/hagl_hal
 	url = git@github.com:tuupola/hagl_esp_mipi.git
 [submodule "components/hagl"]
 	path = components/hagl
