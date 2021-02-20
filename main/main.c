@@ -367,7 +367,7 @@ void demo_task(void *params)
     demo[16] = put_text_demo;
 
     while (1) {
-        //current_demo = 16;
+        //current_demo = 0;
         (*demo[current_demo])();
         drawn++;
     }
@@ -395,9 +395,17 @@ void app_main()
 #ifdef HAGL_HAL_USE_BUFFERING
         xTaskCreatePinnedToCore(framebuffer_task, "Framebuffer", 8192, NULL, 1, NULL, 0);
 #endif
+#ifdef CONFIG_IDF_TARGET_ESP32S2
+        /* ESP32-S2 has only one core, run everthing in core 0. */
+        xTaskCreatePinnedToCore(fps_task, "FPS", 8192, NULL, 2, NULL, 0);
+        xTaskCreatePinnedToCore(demo_task, "Demo", 8192, NULL, 1, NULL, 0);
+        xTaskCreatePinnedToCore(switch_task, "Switch", 2048, NULL, 2, NULL, 0);
+#else
+        /* ESP32 has two cores, run demo stuff in core 1. */
         xTaskCreatePinnedToCore(fps_task, "FPS", 8192, NULL, 2, NULL, 1);
         xTaskCreatePinnedToCore(demo_task, "Demo", 8192, NULL, 1, NULL, 1);
         xTaskCreatePinnedToCore(switch_task, "Switch", 2048, NULL, 2, NULL, 1);
+#endif /* CONFIG_IDF_TARGET_ESP32S2 */
     } else {
         ESP_LOGE(TAG, "No mutex?");
     }
