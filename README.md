@@ -20,3 +20,11 @@ $ make menuconfig
 $ make -j8 flash
 ```
 
+Or if you are using the new build system.
+
+```
+$ git clone https://github.com/tuupola/esp_gfx.git --recursive
+$ cd esp_gfx
+$ idf.py menuconfigs
+$ idf.py build flash
+```
