@@ -38,8 +38,8 @@ SPDX-License-Identifier: MIT-0
 #include <esp_task_wdt.h>
 
 #include <hagl_hal.h>
-#include <bitmap.h>
-#include <backend.h>
+#include <hagl/bitmap.h>
+#include <hagl/backend.h>
 #include <hagl.h>
 #include <font6x9.h>
 #include <fps.h>
@@ -112,7 +112,7 @@ void fps_task(void *params)
     uint16_t color = hagl_color(display, 0, 255, 0);
     wchar_t message[128];
 
-#ifdef HAGL_HAL_USE_BUFFERING
+#ifdef HAGL_HAS_HAL_BACK_BUFFER
     while (1) {
         aps_update(&pps, drawn);
         drawn = 0;
@@ -406,7 +406,7 @@ void app_main()
     mutex = xSemaphoreCreateMutex();
 
     if (NULL != mutex) {
-#ifdef HAGL_HAL_USE_BUFFERING
+#ifdef HAGL_HAS_HAL_BACK_BUFFER
         xTaskCreatePinnedToCore(framebuffer_task, "Framebuffer", 8192, NULL, 1, NULL, 0);
 #endif
 #ifdef CONFIG_IDF_TARGET_ESP32S2
