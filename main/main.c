@@ -396,6 +396,7 @@ void app_main()
         ESP_LOGI(TAG, "Back buffer: %dx%dx%d", display->width, display->height, display->depth);
     }
 
+    hagl_clear(display);
     fps_init(&fps);
     aps_init(&bps);
     aps_init(&pps);
