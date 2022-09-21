@@ -38,8 +38,6 @@ SPDX-License-Identifier: MIT-0
 #include <esp_task_wdt.h>
 
 #include <hagl_hal.h>
-#include <hagl/bitmap.h>
-#include <hagl/backend.h>
 #include <hagl.h>
 #include <font6x9.h>
 #include <fps.h>
