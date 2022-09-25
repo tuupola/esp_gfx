@@ -115,14 +115,14 @@ void fps_task(void *params)
         aps_update(&pps, drawn);
         drawn = 0;
 
-        hagl_set_clip_window(display, 0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
+        hagl_set_clip(display, 0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
 
         swprintf(message, sizeof(message), L"%.*f %s PER SECOND       ", 0, pps.current, primitive[current_demo]);
         hagl_put_text(display, message, 6, 4, color, font6x9);
         swprintf(message, sizeof(message), L"%.*f FPS  ", 1, fps.current);
         hagl_put_text(display, message, DISPLAY_WIDTH - 56, DISPLAY_HEIGHT - 14, color, font6x9);
 
-        hagl_set_clip_window(display,0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
+        hagl_set_clip(display,0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
 
         vTaskDelay(1000 / portTICK_RATE_MS);
     }
@@ -132,9 +132,9 @@ void fps_task(void *params)
         drawn = 0;
 
         swprintf(message,  sizeof(message), L"%.*f %s PER SECOND       ", 0, pps.current, primitive[current_demo]);
-        hagl_set_clip_window(display, 0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
+        hagl_set_clip(display, 0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
         hagl_put_text(display, message, 8, 4, color, font6x9);
-        hagl_set_clip_window(display, 0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
+        hagl_set_clip(display, 0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
 
 
         vTaskDelay(2000 / portTICK_RATE_MS);
@@ -149,7 +149,7 @@ void switch_task(void *params)
         ESP_LOGI(TAG, "%.*f %s per second, FB %.*f FPS", 0, pps.current, primitive[current_demo], 1, fps.current);
 
         current_demo = (current_demo + 1) % 17;
-        hagl_clear_clip_window(display);
+        //hagl_clear_clip_window(display);
         aps_reset(&pps);
         drawn = 0;
 
@@ -401,7 +401,7 @@ void app_main()
 
     ESP_LOGI(TAG, "Heap after HAGL init: %d", esp_get_free_heap_size());
 
-    hagl_set_clip_window(display, 0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
+    hagl_set_clip(display, 0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
     mutex = xSemaphoreCreateMutex();
 
     if (NULL != mutex) {
