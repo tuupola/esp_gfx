@@ -2,7 +2,7 @@
 
 MIT No Attribution
 
-Copyright (c) 2018-2020 Mika Tuupola
+Copyright (c) 2018-2023 Mika Tuupola
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -79,7 +79,8 @@ static hagl_backend_t *display;
  * Flushes the framebuffer to display in a loop. This demo is
  * capped to 30 fps.
  */
-void framebuffer_task(void *params)
+void
+framebuffer_task(void *params)
 {
     TickType_t last;
     const TickType_t frequency = 1000 / 30 / portTICK_RATE_MS;
@@ -105,7 +106,8 @@ void framebuffer_task(void *params)
 /*
  * Displays the info bar on top of the screen.
  */
-void fps_task(void *params)
+void
+fps_task(void *params)
 {
     uint16_t color = hagl_color(display, 0, 255, 0);
     wchar_t message[128];
@@ -122,7 +124,7 @@ void fps_task(void *params)
         swprintf(message, sizeof(message), L"%.*f FPS  ", 1, fps.current);
         hagl_put_text(display, message, DISPLAY_WIDTH - 56, DISPLAY_HEIGHT - 14, color, font6x9);
 
-        hagl_set_clip(display,0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
+        hagl_set_clip(display, 0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
 
         vTaskDelay(1000 / portTICK_RATE_MS);
     }
@@ -143,7 +145,8 @@ void fps_task(void *params)
     vTaskDelete(NULL);
 }
 
-void switch_task(void *params)
+void
+switch_task(void *params)
 {
     while (1) {
         ESP_LOGI(TAG, "%.*f %s per second, FB %.*f FPS", 0, pps.current, primitive[current_demo], 1, fps.current);
@@ -159,7 +162,8 @@ void switch_task(void *params)
     vTaskDelete(NULL);
 }
 
-void polygon_demo()
+void
+polygon_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -176,7 +180,8 @@ void polygon_demo()
     hagl_draw_polygon(display, 5, vertices, colour);
 }
 
-void fill_polygon_demo()
+void
+fill_polygon_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -193,7 +198,8 @@ void fill_polygon_demo()
     hagl_fill_polygon(display, 5, vertices, colour);
 }
 
-void circle_demo()
+void
+circle_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -202,7 +208,8 @@ void circle_demo()
     hagl_draw_circle(display, x0, y0, r, colour);
 }
 
-void fill_circle_demo()
+void
+fill_circle_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -211,7 +218,8 @@ void fill_circle_demo()
     hagl_fill_circle(display, x0, y0, r, colour);
 }
 
-void ellipse_demo()
+void
+ellipse_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -221,7 +229,8 @@ void ellipse_demo()
     hagl_draw_ellipse(display, x0, y0, a, b, colour);
 }
 
-void fill_ellipse_demo()
+void
+fill_ellipse_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -231,7 +240,8 @@ void fill_ellipse_demo()
     hagl_fill_ellipse(display, x0, y0, a, b, colour);
 }
 
-void line_demo()
+void
+line_demo()
 {
     // strcpy(primitive, "LINES");
 
@@ -243,7 +253,8 @@ void line_demo()
     hagl_draw_line(display, x0, y0, x1, y1, colour);
 }
 
-void rectangle_demo()
+void
+rectangle_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -253,7 +264,8 @@ void rectangle_demo()
     hagl_draw_rectangle(display, x0, y0, x1, y1, colour);
 }
 
-void fill_rectangle_demo()
+void
+fill_rectangle_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -263,7 +275,8 @@ void fill_rectangle_demo()
     hagl_fill_rectangle(display, x0, y0, x1, y1, colour);
 }
 
-void put_character_demo()
+void
+put_character_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -273,7 +286,8 @@ void put_character_demo()
     hagl_put_char(display, ascii, x0, y0, colour, font6x9);
 }
 
-void put_text_demo()
+void
+put_text_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 80;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -283,7 +297,8 @@ void put_text_demo()
     hagl_put_text(display, u"YO¡ MTV raps ♥", x0, y0, colour, font6x9);
 }
 
-void put_pixel_demo()
+void
+put_pixel_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -291,7 +306,8 @@ void put_pixel_demo()
     hagl_put_pixel(display, x0, y0, colour);
 }
 
-void triangle_demo()
+void
+triangle_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -303,7 +319,8 @@ void triangle_demo()
     hagl_draw_triangle(display, x0, y0, x1, y1, x2, y2, colour);
 }
 
-void fill_triangle_demo()
+void
+fill_triangle_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -315,7 +332,8 @@ void fill_triangle_demo()
     hagl_fill_triangle(display, x0, y0, x1, y1, x2, y2, colour);
 }
 
-void rgb_demo()
+void
+rgb_demo()
 {
     uint16_t red = hagl_color(display, 255, 0, 0);
     uint16_t green = hagl_color(display, 0, 255, 0);
@@ -330,7 +348,8 @@ void rgb_demo()
     hagl_fill_rectangle(display, x2, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, blue);
 }
 
-void round_rectangle_demo()
+void
+round_rectangle_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -341,7 +360,8 @@ void round_rectangle_demo()
     hagl_draw_rounded_rectangle(display, x0, y0, x1, y1, r, colour);
 }
 
-void fill_round_rectangle_demo()
+void
+fill_round_rectangle_demo()
 {
     int16_t x0 = (rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (rand() % DISPLAY_HEIGHT + 20) - 20;
@@ -352,7 +372,8 @@ void fill_round_rectangle_demo()
     hagl_fill_rounded_rectangle(display, x0, y0, x1, y1, r, colour);
 }
 
-void demo_task(void *params)
+void
+demo_task(void *params)
 {
     void (*demo[17]) ();
 
@@ -384,7 +405,8 @@ void demo_task(void *params)
     vTaskDelete(NULL);
 }
 
-void app_main()
+void
+app_main()
 {
     ESP_LOGI(TAG, "SDK version: %s", esp_get_idf_version());
     ESP_LOGI(TAG, "Heap when starting: %d", esp_get_free_heap_size());
