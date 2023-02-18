@@ -86,7 +86,7 @@ void
 framebuffer_task(void *params)
 {
     TickType_t last;
-    const TickType_t frequency = 1000 / 30 / portTICK_RATE_MS;
+    const TickType_t frequency = 1000 / 30 / portTICK_PERIOD_MS;
 
     last = xTaskGetTickCount();
 
@@ -129,7 +129,7 @@ fps_task(void *params)
 
         hagl_set_clip(display, 0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
 
-        vTaskDelay(1000 / portTICK_RATE_MS);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 #else
     while (1) {
@@ -142,7 +142,7 @@ fps_task(void *params)
         hagl_set_clip(display, 0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
 
 
-        vTaskDelay(2000 / portTICK_RATE_MS);
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
     }
 #endif
     vTaskDelete(NULL);
@@ -159,7 +159,7 @@ switch_task(void *params)
         aps_reset(&pps);
         drawn = 0;
 
-        vTaskDelay(10000 / portTICK_RATE_MS);
+        vTaskDelay(10000 / portTICK_PERIOD_MS);
     }
 
     vTaskDelete(NULL);
@@ -434,7 +434,7 @@ void
 app_main()
 {
     ESP_LOGI(TAG, "SDK version: %s", esp_get_idf_version());
-    ESP_LOGI(TAG, "Heap when starting: %d", esp_get_free_heap_size());
+    ESP_LOGI(TAG, "Heap when starting: %ld", esp_get_free_heap_size());
 
     display = hagl_init();
     if (display->buffer) {
@@ -446,7 +446,7 @@ app_main()
     aps_init(&bps);
     aps_init(&pps);
 
-    ESP_LOGI(TAG, "Heap after HAGL init: %d", esp_get_free_heap_size());
+    ESP_LOGI(TAG, "Heap after HAGL init: %ld", esp_get_free_heap_size());
 
     hagl_set_clip(display, 0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
     mutex = xSemaphoreCreateMutex();
