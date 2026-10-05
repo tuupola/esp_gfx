@@ -159,7 +159,7 @@ void switch_task(void *params) {
             primitive[current_demo], 1, fps.current
         );
 
-        current_demo = (current_demo + 1) % 17;
+        current_demo = (current_demo + 1) % 19;
         // hagl_clear_clip_window(display);
         aps_reset(&pps);
         drawn = 0;
@@ -360,7 +360,7 @@ void fill_round_rectangle_demo() {
 }
 
 void demo_task(void *params) {
-    void (*demo[17])();
+    void (*demo[19])();
 
     demo[0] = rgb_demo;
     demo[1] = put_pixel_demo;
