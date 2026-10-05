@@ -219,21 +219,21 @@ void fill_circle_demo() {
 }
 
 void ellipse_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    uint16_t a = (fast_rand() % 40) + 20;
-    uint16_t b = (fast_rand() % 40) + 20;
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_draw_ellipse(display, x0, y0, a, b, colour);
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    uint16_t a = 40;
+    uint16_t b = 30;
+
+    hagl_draw_ellipse(display, x0, y0, a, b, color++);
 }
 
 void fill_ellipse_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    uint16_t a = (fast_rand() % 40) + 20;
-    uint16_t b = (fast_rand() % 40) + 20;
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_fill_ellipse(display, x0, y0, a, b, colour);
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    uint16_t a = 40;
+    uint16_t b = 30;
+
+    hagl_fill_ellipse(display, x0, y0, a, b, color++);
 }
 
 void line_demo() {
