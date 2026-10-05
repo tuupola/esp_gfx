@@ -203,19 +203,19 @@ void fill_polygon_demo() {
 }
 
 void circle_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    uint16_t r = (fast_rand() % 40);
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_draw_circle(display, x0, y0, r, colour);
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    uint16_t r = 40;
+
+    hagl_draw_circle(display, x0, y0, r, color++);
 }
 
 void fill_circle_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    uint16_t r = (fast_rand() % 40);
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_fill_circle(display, x0, y0, r, colour);
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    uint16_t r = 40;
+
+    hagl_fill_circle(display, x0, y0, r, color++);
 }
 
 void ellipse_demo() {
