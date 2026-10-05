@@ -77,6 +77,7 @@ static fps_instance_t fps;
 static aps_instance_t bps;
 static aps_instance_t pps;
 static hagl_backend_t *display;
+static uint16_t color = 0;
 
 /*
  * Flushes the framebuffer to display in a loop. This demo is
@@ -170,35 +171,35 @@ void switch_task(void *params) {
 }
 
 void polygon_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y1 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x2 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y2 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x3 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y3 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x4 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y4 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    hagl_color_t colour = fast_rand() % 0xffff;
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    int16_t x1 = x0 + 30;
+    int16_t y1 = y0;
+    int16_t x2 = x0 + 30;
+    int16_t y2 = y0 + 40;
+    int16_t x3 = x0 + 15;
+    int16_t y3 = y0 + 50;
+    int16_t x4 = x0;
+    int16_t y4 = y0 + 40;
+
     int16_t vertices[10] = {x0, y0, x1, y1, x2, y2, x3, y3, x4, y4};
-    hagl_draw_polygon(display, 5, vertices, colour);
+    hagl_draw_polygon(display, 5, vertices, color++);
 }
 
 void fill_polygon_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y1 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x2 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y2 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x3 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y3 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x4 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y4 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    hagl_color_t colour = fast_rand() % 0xffff;
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    int16_t x1 = x0 + 30;
+    int16_t y1 = y0;
+    int16_t x2 = x0 + 30;
+    int16_t y2 = y0 + 40;
+    int16_t x3 = x0 + 15;
+    int16_t y3 = y0 + 50;
+    int16_t x4 = x0;
+    int16_t y4 = y0 + 40;
+
     int16_t vertices[10] = {x0, y0, x1, y1, x2, y2, x3, y3, x4, y4};
-    hagl_fill_polygon(display, 5, vertices, colour);
+    hagl_fill_polygon(display, 5, vertices, color++);
 }
 
 void circle_demo() {
