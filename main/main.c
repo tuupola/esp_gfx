@@ -282,28 +282,25 @@ void fill_rectangle_demo() {
 }
 
 void put_character_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
 
-    hagl_color_t colour = fast_rand() % 0xffff;
-    char ascii = fast_rand() % 127;
-    hagl_put_char(display, ascii, x0, y0, colour, font6x9);
+    char ascii = fast_rand() & 0x7E;
+    hagl_put_char(display, ascii, x0, y0, color++, font6x9);
 }
 
 void put_text_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 80;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
 
-    hagl_color_t colour = fast_rand() % 0xffff;
-
-    hagl_put_text(display, u"YO¡ MTV raps ♥", x0, y0, colour, font6x9);
+    hagl_put_text(display, u"YO¡ MTV raps ♥", x0, y0, color++, font6x9);
 }
 
 void put_pixel_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_put_pixel(display, x0, y0, colour);
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+
+    hagl_put_pixel(display, x0, y0, color++);
 }
 
 void triangle_demo() {
