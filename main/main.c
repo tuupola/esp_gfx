@@ -307,25 +307,25 @@ void put_pixel_demo() {
 }
 
 void triangle_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y1 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x2 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y2 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_draw_triangle(display, x0, y0, x1, y1, x2, y2, colour);
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    int16_t x1 = x0 + 30;
+    int16_t y1 = y0;
+    int16_t x2 = x0 + 15;
+    int16_t y2 = y0 + 40;
+
+    hagl_draw_triangle(display, x0, y0, x1, y1, x2, y2, color++);
 }
 
 void fill_triangle_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y1 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x2 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y2 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_fill_triangle(display, x0, y0, x1, y1, x2, y2, colour);
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    int16_t x1 = x0 + 30;
+    int16_t y1 = y0;
+    int16_t x2 = x0 + 15;
+    int16_t y2 = y0 + 40;
+
+    hagl_fill_triangle(display, x0, y0, x1, y1, x2, y2, color++);
 }
 
 void rgb_demo() {
