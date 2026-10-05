@@ -35,24 +35,24 @@ Below testing was done with the [Waveshare ESP32-S3-Touch-LCD-2.8](https://docs.
 
 |                               | Single | Double  |
 | ----------------------------- | ------ | ------- |
-| hagl_put_pixel()              | 11021  | 1499285 |
-| hagl_draw_line()              | 306    | 57305   |
-| hagl_draw_vline()             | 9315   | 298878  |
-| hagl_draw_hline()             | 10256  | 594243  |
-| hagl_draw_circle()            | 66     | 16922   |
-| hagl_fill_circle()            | 107    | 5951    |
-| hagl_draw_ellipse()           | 74     | 18189   |
-| hagl_fill_ellipse()           | 126    | 6637    |
-| hagl_draw_triangle()          | 138    | 27450   |
-| hagl_fill_triangle()          | 338    | 12324   |
-| hagl_draw_rectangle()         | 2977   | 131637  |
-| hagl_fill_rectangle()         | 464    | 27721   |
-| hagl_draw_rounded_rectangle() | 203    | 53933   |
-| hagl_fill_rounded_rectangle() | 313    | 22193   |
-| hagl_draw_polygon()           | 115    | 21623   |
-| hagl_fill_polygon()           | 289    | 7653    |
-| hagl_put_char()               | 4263   | 59648   |
-| hagl_put_text()               | 293    | 3908    |
+| hagl_put_pixel()              | 11010  | 1510788 |
+| hagl_draw_line()              | 306    | 77646   |
+| hagl_draw_hline()             | 10217  | 594441  |
+| hagl_draw_vline()             | 9304   | 309445  |
+| hagl_draw_circle()            | 65     | 17840   |
+| hagl_fill_circle()            | 151    | 6729    |
+| hagl_draw_ellipse()           | 74     | 18608   |
+| hagl_fill_ellipse()           | 125    | 6547    |
+| hagl_draw_triangle()          | 139    | 36665   |
+| hagl_fill_triangle()          | 321    | 17863   |
+| hagl_draw_rectangle()         | 2966   | 135545  |
+| hagl_fill_rectangle()         | 462    | 27883   |
+| hagl_draw_rounded_rectangle() | 201    | 55350   |
+| hagl_fill_rounded_rectangle() | 312    | 22231   |
+| hagl_draw_polygon()           | 115    | 28487   |
+| hagl_fill_polygon()           | 278    | 10783   |
+| hagl_put_char()               | 4785   | 60200   |
+| hagl_put_text()               | 318    | 3991    |
 
 ## License
 
