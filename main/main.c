@@ -264,21 +264,21 @@ void hline_demo() {
 }
 
 void rectangle_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y1 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_draw_rectangle(display, x0, y0, x1, y1, colour);
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    int16_t x1 = x0 + 40;
+    int16_t y1 = y0 + 30;
+
+    hagl_draw_rectangle(display, x0, y0, x1, y1, color++);
 }
 
 void fill_rectangle_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y1 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_fill_rectangle(display, x0, y0, x1, y1, colour);
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    int16_t x1 = x0 + 40;
+    int16_t y1 = y0 + 30;
+
+    hagl_fill_rectangle(display, x0, y0, x1, y1, color++);
 }
 
 void put_character_demo() {
@@ -343,23 +343,23 @@ void rgb_demo() {
 }
 
 void round_rectangle_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y1 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t r = fast_rand() % 10;
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_draw_rounded_rectangle(display, x0, y0, x1, y1, r, colour);
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    int16_t x1 = x0 + 40;
+    int16_t y1 = y0 + 30;
+    int16_t r = 10;
+
+    hagl_draw_rounded_rectangle(display, x0, y0, x1, y1, r, color++);
 }
 
 void fill_round_rectangle_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y1 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t r = fast_rand() % 10;
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_fill_rounded_rectangle(display, x0, y0, x1, y1, r, colour);
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    int16_t x1 = x0 + 40;
+    int16_t y1 = y0 + 30;
+    int16_t r = 10;
+
+    hagl_fill_rounded_rectangle(display, x0, y0, x1, y1, r, color++);
 }
 
 void demo_task(void *params) {
