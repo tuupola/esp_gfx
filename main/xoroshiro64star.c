@@ -21,21 +21,20 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
 
    The state must be seeded so that it is not everywhere zero. */
 
-
 static inline uint32_t rotl(const uint32_t x, int k) {
-	return (x << k) | (x >> (32 - k));
+    return (x << k) | (x >> (32 - k));
 }
 
 static uint32_t s[2] = {27, 11};
 
 uint32_t fast_rand(void) {
-	const uint32_t s0 = s[0];
-	uint32_t s1 = s[1];
-	const uint32_t result = s0 * 0x9E3779BB;
+    const uint32_t s0 = s[0];
+    uint32_t s1 = s[1];
+    const uint32_t result = s0 * 0x9E3779BB;
 
-	s1 ^= s0;
-	s[0] = rotl(s0, 26) ^ s1 ^ (s1 << 9); // a, b
-	s[1] = rotl(s1, 13); // c
+    s1 ^= s0;
+    s[0] = rotl(s0, 26) ^ s1 ^ (s1 << 9); // a, b
+    s[1] = rotl(s1, 13); // c
 
-	return result;
+    return result;
 }

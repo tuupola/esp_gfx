@@ -31,20 +31,20 @@ SPDX-License-Identifier: MIT-0
 #include <time.h>
 #include <wchar.h>
 
+#include <esp_log.h>
+#include <esp_task_wdt.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
 #include <freertos/task.h>
-#include <esp_log.h>
-#include <esp_task_wdt.h>
 
-#include <hagl_hal.h>
-#include <hagl.h>
+#include <aps.h>
 #include <font6x9.h>
 #include <fps.h>
-#include <aps.h>
+#include <hagl.h>
+#include <hagl_hal.h>
 
-#include "xoroshiro64star.h"
 #include "sdkconfig.h"
+#include "xoroshiro64star.h"
 
 static const char *TAG = "main";
 static char primitive[19][32] = {
@@ -82,9 +82,7 @@ static hagl_backend_t *display;
  * Flushes the framebuffer to display in a loop. This demo is
  * capped to 30 fps.
  */
-void
-framebuffer_task(void *params)
-{
+void framebuffer_task(void *params) {
     TickType_t last;
     const TickType_t frequency = 1000 / 30 / portTICK_PERIOD_MS;
 
@@ -109,9 +107,7 @@ framebuffer_task(void *params)
 /*
  * Displays the info bar on top of the screen.
  */
-void
-fps_task(void *params)
-{
+void fps_task(void *params) {
     uint16_t color = hagl_color(display, 0, 255, 0);
     wchar_t message[128];
 
@@ -122,10 +118,15 @@ fps_task(void *params)
 
         hagl_set_clip(display, 0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
 
-        swprintf(message, sizeof(message), L"%.*f %s PER SECOND       ", 0, pps.current, primitive[current_demo]);
+        swprintf(
+            message, sizeof(message), L"%.*f %s PER SECOND       ", 0, pps.current,
+            primitive[current_demo]
+        );
         hagl_put_text(display, message, 6, 4, color, font6x9);
         swprintf(message, sizeof(message), L"%.*f FPS  ", 1, fps.current);
-        hagl_put_text(display, message, DISPLAY_WIDTH - 56, DISPLAY_HEIGHT - 14, color, font6x9);
+        hagl_put_text(
+            display, message, DISPLAY_WIDTH - 56, DISPLAY_HEIGHT - 14, color, font6x9
+        );
 
         hagl_set_clip(display, 0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
 
@@ -136,11 +137,13 @@ fps_task(void *params)
         aps_update(&pps, drawn);
         drawn = 0;
 
-        swprintf(message,  sizeof(message), L"%.*f %s PER SECOND       ", 0, pps.current, primitive[current_demo]);
+        swprintf(
+            message, sizeof(message), L"%.*f %s PER SECOND       ", 0, pps.current,
+            primitive[current_demo]
+        );
         hagl_set_clip(display, 0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
         hagl_put_text(display, message, 8, 4, color, font6x9);
         hagl_set_clip(display, 0, 20, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 21);
-
 
         vTaskDelay(2000 / portTICK_PERIOD_MS);
     }
@@ -148,14 +151,15 @@ fps_task(void *params)
     vTaskDelete(NULL);
 }
 
-void
-switch_task(void *params)
-{
+void switch_task(void *params) {
     while (1) {
-        ESP_LOGI(TAG, "%.*f %s per second, FB %.*f FPS", 0, pps.current, primitive[current_demo], 1, fps.current);
+        ESP_LOGI(
+            TAG, "%.*f %s per second, FB %.*f FPS", 0, pps.current,
+            primitive[current_demo], 1, fps.current
+        );
 
         current_demo = (current_demo + 1) % 17;
-        //hagl_clear_clip_window(display);
+        // hagl_clear_clip_window(display);
         aps_reset(&pps);
         drawn = 0;
 
@@ -165,9 +169,7 @@ switch_task(void *params)
     vTaskDelete(NULL);
 }
 
-void
-polygon_demo()
-{
+void polygon_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
@@ -183,9 +185,7 @@ polygon_demo()
     hagl_draw_polygon(display, 5, vertices, colour);
 }
 
-void
-fill_polygon_demo()
-{
+void fill_polygon_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
@@ -201,9 +201,7 @@ fill_polygon_demo()
     hagl_fill_polygon(display, 5, vertices, colour);
 }
 
-void
-circle_demo()
-{
+void circle_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t r = (fast_rand() % 40);
@@ -211,9 +209,7 @@ circle_demo()
     hagl_draw_circle(display, x0, y0, r, colour);
 }
 
-void
-fill_circle_demo()
-{
+void fill_circle_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t r = (fast_rand() % 40);
@@ -221,9 +217,7 @@ fill_circle_demo()
     hagl_fill_circle(display, x0, y0, r, colour);
 }
 
-void
-ellipse_demo()
-{
+void ellipse_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t a = (fast_rand() % 40) + 20;
@@ -232,9 +226,7 @@ ellipse_demo()
     hagl_draw_ellipse(display, x0, y0, a, b, colour);
 }
 
-void
-fill_ellipse_demo()
-{
+void fill_ellipse_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     uint16_t a = (fast_rand() % 40) + 20;
@@ -243,9 +235,7 @@ fill_ellipse_demo()
     hagl_fill_ellipse(display, x0, y0, a, b, colour);
 }
 
-void
-line_demo()
-{
+void line_demo() {
     // strcpy(primitive, "LINES");
 
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
@@ -256,9 +246,7 @@ line_demo()
     hagl_draw_line(display, x0, y0, x1, y1, colour);
 }
 
-void
-vline_demo()
-{
+void vline_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t w = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
@@ -266,9 +254,7 @@ vline_demo()
     hagl_draw_vline(display, x0, y0, w, colour);
 }
 
-void
-hline_demo()
-{
+void hline_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t h = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
@@ -276,9 +262,7 @@ hline_demo()
     hagl_draw_vline(display, x0, y0, h, colour);
 }
 
-void
-rectangle_demo()
-{
+void rectangle_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
@@ -287,9 +271,7 @@ rectangle_demo()
     hagl_draw_rectangle(display, x0, y0, x1, y1, colour);
 }
 
-void
-fill_rectangle_demo()
-{
+void fill_rectangle_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
@@ -298,9 +280,7 @@ fill_rectangle_demo()
     hagl_fill_rectangle(display, x0, y0, x1, y1, colour);
 }
 
-void
-put_character_demo()
-{
+void put_character_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
 
@@ -309,9 +289,7 @@ put_character_demo()
     hagl_put_char(display, ascii, x0, y0, colour, font6x9);
 }
 
-void
-put_text_demo()
-{
+void put_text_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 80;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
 
@@ -320,18 +298,14 @@ put_text_demo()
     hagl_put_text(display, u"YO¡ MTV raps ♥", x0, y0, colour, font6x9);
 }
 
-void
-put_pixel_demo()
-{
+void put_pixel_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     hagl_color_t colour = fast_rand() % 0xffff;
     hagl_put_pixel(display, x0, y0, colour);
 }
 
-void
-triangle_demo()
-{
+void triangle_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
@@ -342,9 +316,7 @@ triangle_demo()
     hagl_draw_triangle(display, x0, y0, x1, y1, x2, y2, colour);
 }
 
-void
-fill_triangle_demo()
-{
+void fill_triangle_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
@@ -355,9 +327,7 @@ fill_triangle_demo()
     hagl_fill_triangle(display, x0, y0, x1, y1, x2, y2, colour);
 }
 
-void
-rgb_demo()
-{
+void rgb_demo() {
     uint16_t red = hagl_color(display, 255, 0, 0);
     uint16_t green = hagl_color(display, 0, 255, 0);
     uint16_t blue = hagl_color(display, 0, 0, 255);
@@ -371,9 +341,7 @@ rgb_demo()
     hagl_fill_rectangle(display, x2, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, blue);
 }
 
-void
-round_rectangle_demo()
-{
+void round_rectangle_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
@@ -383,9 +351,7 @@ round_rectangle_demo()
     hagl_draw_rounded_rectangle(display, x0, y0, x1, y1, r, colour);
 }
 
-void
-fill_round_rectangle_demo()
-{
+void fill_round_rectangle_demo() {
     int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
     int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
     int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
@@ -395,10 +361,8 @@ fill_round_rectangle_demo()
     hagl_fill_rounded_rectangle(display, x0, y0, x1, y1, r, colour);
 }
 
-void
-demo_task(void *params)
-{
-    void (*demo[17]) ();
+void demo_task(void *params) {
+    void (*demo[17])();
 
     demo[0] = rgb_demo;
     demo[1] = put_pixel_demo;
@@ -421,24 +385,23 @@ demo_task(void *params)
     demo[18] = put_text_demo;
 
     while (1) {
-        //current_demo = 0;
+        // current_demo = 0;
         (*demo[current_demo])();
         drawn++;
     }
 
-
     vTaskDelete(NULL);
 }
 
-void
-app_main()
-{
+void app_main() {
     ESP_LOGI(TAG, "SDK version: %s", esp_get_idf_version());
     ESP_LOGI(TAG, "Heap when starting: %ld", esp_get_free_heap_size());
 
     display = hagl_init();
     if (display->buffer) {
-        ESP_LOGI(TAG, "Back buffer: %dx%dx%d", DISPLAY_WIDTH, DISPLAY_HEIGHT, display->depth);
+        ESP_LOGI(
+            TAG, "Back buffer: %dx%dx%d", DISPLAY_WIDTH, DISPLAY_HEIGHT, display->depth
+        );
     }
 
     hagl_clear(display);
