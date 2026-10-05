@@ -237,30 +237,30 @@ void fill_ellipse_demo() {
 }
 
 void line_demo() {
-    // strcpy(primitive, "LINES");
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    int16_t dx = (fast_rand() & 1) ? 28 : -28;
+    int16_t dy = (fast_rand() & 1) ? 28 : -28;
+    int16_t x1 = x0 + dx;
+    int16_t y1 = y0 + dy;
 
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t x1 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y1 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_draw_line(display, x0, y0, x1, y1, colour);
+    hagl_draw_line(display, x0, y0, x1, y1, color++);
 }
 
 void vline_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t w = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_draw_vline(display, x0, y0, w, colour);
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    int16_t w = 40;
+
+    hagl_draw_vline(display, x0, y0, w, color++);
 }
 
 void hline_demo() {
-    int16_t x0 = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    int16_t y0 = (fast_rand() % DISPLAY_HEIGHT + 20) - 20;
-    int16_t h = (fast_rand() % DISPLAY_WIDTH + 20) - 20;
-    hagl_color_t colour = fast_rand() % 0xffff;
-    hagl_draw_vline(display, x0, y0, h, colour);
+    int16_t x0 = fast_rand() % DISPLAY_WIDTH;
+    int16_t y0 = fast_rand() % DISPLAY_HEIGHT;
+    int16_t h = 40;
+
+    hagl_draw_hline(display, x0, y0, h, color++);
 }
 
 void rectangle_demo() {
