@@ -31,28 +31,28 @@ $ idf.py build flash
 
 ## Speed
 
-Below testing was done with the [Waveshare ESP32-S3-Touch-LCD-2.8](https://docs.waveshare.com/ESP32-S3-Touch-LCD-2.8). Buffered refresh rate was set to 33 frames per second. Number represents operations per seconsd ie. bigger number is better.
+Below testing was done with the [Waveshare ESP32-S3-LCD-1.47](https://www.waveshare.com/wiki/ESP32-S3-LCD-1.47). Buffered refresh rate was set to 33 frames per second. Number represents operations per seconsd ie. bigger number is better.
 
-|                               | Single | Double  |
-| ----------------------------- | ------ | ------- |
-| hagl_put_pixel()              | 11010  | 1510788 |
-| hagl_draw_line()              | 306    | 77646   |
-| hagl_draw_hline()             | 10217  | 594441  |
-| hagl_draw_vline()             | 9304   | 309445  |
-| hagl_draw_circle()            | 65     | 17840   |
-| hagl_fill_circle()            | 151    | 6729    |
-| hagl_draw_ellipse()           | 74     | 18608   |
-| hagl_fill_ellipse()           | 125    | 6547    |
-| hagl_draw_triangle()          | 139    | 36665   |
-| hagl_fill_triangle()          | 321    | 17863   |
-| hagl_draw_rectangle()         | 2966   | 135545  |
-| hagl_fill_rectangle()         | 462    | 27883   |
-| hagl_draw_rounded_rectangle() | 201    | 55350   |
-| hagl_fill_rounded_rectangle() | 312    | 22231   |
-| hagl_draw_polygon()           | 115    | 28487   |
-| hagl_fill_polygon()           | 278    | 10783   |
-| hagl_put_char()               | 4785   | 60200   |
-| hagl_put_text()               | 318    | 3991    |
+|                               | Single | Double  | Triple  |
+| ----------------------------- | ------ | ------- | ------- |
+| hagl_put_pixel()              | 10340  | 1495646 | 1495443 |
+| hagl_draw_line()              | 301    | 76827   | 76879   |
+| hagl_draw_hline()             | 9075   | 592837  | 592845  |
+| hagl_draw_vline()             | 8447   | 339555  | 339553  |
+| hagl_draw_circle()            | 66     | 18076   | 18077   |
+| hagl_fill_circle()            | 129    | 6661    | 6661    |
+| hagl_draw_ellipse()           | 74     | 18862   | 18861   |
+| hagl_fill_ellipse()           | 106    | 6455    | 6454    |
+| hagl_draw_triangle()          | 137    | 36338   | 36337   |
+| hagl_fill_triangle()          | 297    | 17178   | 17180   |
+| hagl_draw_rectangle()         | 2724   | 147899  | 147897  |
+| hagl_fill_rectangle()         | 410    | 27837   | 27838   |
+| hagl_draw_rounded_rectangle() | 201    | 55798   | 55800   |
+| hagl_fill_rounded_rectangle() | 280    | 22021   | 22021   |
+| hagl_draw_polygon()           | 116    | 28044   | 28044   |
+| hagl_fill_polygon()           | 245    | 10310   | 10305   |
+| hagl_put_char()               | 4599   | 60465   | 60466   |
+| hagl_put_text()               | 328    | 4047    | 4049    |
 
 ## License
 
